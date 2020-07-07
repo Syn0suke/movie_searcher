@@ -21,9 +21,10 @@
 
         <ImageView
             android:id="@+id/iv_delete_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="370dp"
+            android:layout_height="370dp"
             android:layout_weight="1"
+            android:layout_gravity="center"
             android:scaleType="centerInside"
             android:adjustViewBounds="true"
             app:srcCompat="@drawable/ic_launcher_foreground" />

@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,7 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.example.stefandy_2201789536.DatabaseHelper;
+import helper.DatabaseHelper;
 import com.example.stefandy_2201789536.DetailActivity;
 import com.example.stefandy_2201789536.R;
 
@@ -126,7 +125,7 @@ public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.Mo
                 Glide.with(mContext)
                         .asBitmap()
                         .load(url)
-                        .into(new CustomTarget<Bitmap>(400,400) {
+                        .into(new CustomTarget<Bitmap>(480,720) {
 
                             @Override
                             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
@@ -148,7 +147,7 @@ public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.Mo
 
     private String saveImage(Bitmap image) {
 
-        String imageFileName = "JPEG_" + title + ".jpg";
+        String imageFileName = "JPEG_" + title + ".jpeg";
         File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
                 + "/MOVIE");
         boolean success = true;
@@ -160,7 +159,7 @@ public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.Mo
             savedImagePath = imageFile.getAbsolutePath();
             try {
                 OutputStream fOut = new FileOutputStream(imageFile);
-                image.compress(Bitmap.CompressFormat.JPEG, 400, fOut);
+                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
                 fOut.close();
             } catch (Exception e) {
                 e.printStackTrace();

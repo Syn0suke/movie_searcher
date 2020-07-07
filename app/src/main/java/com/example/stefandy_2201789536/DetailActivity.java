@@ -12,12 +12,10 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -27,6 +25,8 @@ import com.bumptech.glide.request.transition.Transition;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+
+import helper.DatabaseHelper;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -76,7 +76,7 @@ public class DetailActivity extends AppCompatActivity {
                 Glide.with(mContext)
                         .asBitmap()
                         .load(url)
-                        .into(new CustomTarget<Bitmap>(400,400) {
+                        .into(new CustomTarget<Bitmap>(480,720) {
 
                             @Override
                             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
@@ -95,7 +95,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private String saveImage(Bitmap image) {
 
-        String imageFileName = "JPEG_" + title + ".jpg";
+        String imageFileName = "JPEG_" + title + ".jpeg";
         File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
                 + "/MOVIE");
         boolean success = true;
@@ -107,7 +107,7 @@ public class DetailActivity extends AppCompatActivity {
             savedImagePath = imageFile.getAbsolutePath();
             try {
                 OutputStream fOut = new FileOutputStream(imageFile);
-                image.compress(Bitmap.CompressFormat.JPEG, 400, fOut);
+                image.compress(Bitmap.CompressFormat.JPEG,100,fOut);
                 fOut.close();
             } catch (Exception e) {
                 e.printStackTrace();
