@@ -78,6 +78,7 @@ public class SearchFragment extends Fragment {
 
     private void jsonRequest() {
         requestQueue = Volley.newRequestQueue(getContext());
+        lstFilm.clear();
 
         search_result = search.getText().toString();
         String final_search = search_result.replaceFirst("\\s", "+");
@@ -117,7 +118,6 @@ public class SearchFragment extends Fragment {
 
         SearchViewAdapter svAdapter = new SearchViewAdapter(getContext(), lstFilm);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-
         recyclerView.setAdapter(svAdapter);
     }
 

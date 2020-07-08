@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -74,22 +75,28 @@ public class DetailActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Glide.with(mContext)
-                        .asBitmap()
-                        .load(url)
-                        .into(new CustomTarget<Bitmap>(480,720) {
+                if(db.checkMovie(title) == false) {
+                    Glide.with(mContext)
+                            .asBitmap()
+                            .load(url)
+                            .into(new CustomTarget<Bitmap>(480, 720) {
 
-                            @Override
-                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                               saveImage(resource);
-                                db.AddMovie(title,year,id,savedImagePath);
-                            }
+                                @Override
+                                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                    saveImage(resource);
+                                    db.AddMovie(title, year, id, savedImagePath);
+                                }
 
-                            @Override
-                            public void onLoadCleared(@Nullable Drawable placeholder) {
+                                @Override
+                                public void onLoadCleared(@Nullable Drawable placeholder) {
 
-                            }
-                        });
+                                }
+                            });
+                }
+                else
+                {
+                    Toast.makeText(mContext,"Movie already saved",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

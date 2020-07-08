@@ -112,6 +112,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return movieList;
     }
 
+    public boolean checkMovie(String title) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("Select * from " + TABLE_NAME + " where movie_title=?", new String[]{title});
+        if (cursor.getCount() > 0) {
+            cursor.close();
+            return true;
+        } else {
+            cursor.close();
+            return false;
+        }
+    }
+
     public void Delete(String title) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME,"movie_title = ?",new String[]{title});

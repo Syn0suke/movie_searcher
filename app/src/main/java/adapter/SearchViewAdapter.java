@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -123,23 +124,28 @@ public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.Mo
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add:
-                Glide.with(mContext)
-                        .asBitmap()
-                        .load(url)
-                        .into(new CustomTarget<Bitmap>(480,720) {
+                if(db.checkMovie(title) == false) {
+                    Glide.with(mContext)
+                            .asBitmap()
+                            .load(url)
+                            .into(new CustomTarget<Bitmap>(480, 720) {
 
-                            @Override
-                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                saveImage(resource);
-                                db.AddMovie(title,year,id,savedImagePath);
-                            }
+                                @Override
+                                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                    saveImage(resource);
+                                    db.AddMovie(title, year, id, savedImagePath);
+                                }
 
-                            @Override
-                            public void onLoadCleared(@Nullable Drawable placeholder) {
+                                @Override
+                                public void onLoadCleared(@Nullable Drawable placeholder) {
 
-                            }
-                        });
-
+                                }
+                            });
+                }
+                else
+                {
+                    Toast.makeText(mContext,"Movie already saved",Toast.LENGTH_SHORT).show();
+                }
                 return true;
             default:
                 return false;
