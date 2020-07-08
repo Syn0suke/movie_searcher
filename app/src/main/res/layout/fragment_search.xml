@@ -24,7 +24,8 @@
         android:textColor="#ffffff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search"/>
+        android:text="Search"
+        android:textSize="25px"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

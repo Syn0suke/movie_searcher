@@ -85,6 +85,8 @@ public class DetailActivity extends AppCompatActivity {
                                 public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                                     saveImage(resource);
                                     db.AddMovie(title, year, id, savedImagePath);
+                                    Intent intent = new Intent(mContext, MainActivity.class);
+                                    mContext.startActivity(intent);
                                 }
 
                                 @Override
