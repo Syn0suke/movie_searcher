@@ -124,6 +124,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public String getPath(String title) {
+        String link;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("Select thumbnail_path from " + TABLE_NAME + " where movie_title=?", new String[]{title});
+        if(cursor.moveToFirst()){
+            do{
+                link = cursor.getString(0);
+            }while(cursor.moveToNext());
+            return link;
+        }
+        else return null;
+    }
+
     public void Delete(String title) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME,"movie_title = ?",new String[]{title});

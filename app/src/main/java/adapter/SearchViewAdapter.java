@@ -25,6 +25,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import helper.DatabaseHelper;
+
+import com.example.stefandy_2201789536.DeleteDetail;
 import com.example.stefandy_2201789536.DetailActivity;
 import com.example.stefandy_2201789536.R;
 
@@ -69,12 +71,24 @@ public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.Mo
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, DetailActivity.class);
-                intent.putExtra("Title",mData.get(position).getTitle());
-                intent.putExtra("Year",mData.get(position).getYear());
-                intent.putExtra("Id",mData.get(position).getId());
-                intent.putExtra("Image",mData.get(position).getImage_url());
-                mContext.startActivity(intent);
+                if(db.checkMovie(mData.get(position).getTitle()) == false) {
+                    Intent intent = new Intent(mContext, DetailActivity.class);
+                    intent.putExtra("Title", mData.get(position).getTitle());
+                    intent.putExtra("Year", mData.get(position).getYear());
+                    intent.putExtra("Id", mData.get(position).getId());
+                    intent.putExtra("Image", mData.get(position).getImage_url());
+                    mContext.startActivity(intent);
+                }
+                else
+                {
+                    title = mData.get(position).getTitle();
+                    Intent intent = new Intent(mContext, DeleteDetail.class);
+                    intent.putExtra("Title", mData.get(position).getTitle());
+                    intent.putExtra("Year", mData.get(position).getYear());
+                    intent.putExtra("Id", mData.get(position).getId());
+                    intent.putExtra("Image", db.getPath(title));
+                    mContext.startActivity(intent);
+                }
             }
         });
 
