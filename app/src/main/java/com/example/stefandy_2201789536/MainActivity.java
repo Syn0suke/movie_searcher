@@ -43,4 +43,9 @@ public class MainActivity extends AppCompatActivity {
         tabLayoutMediator.attach();
 
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }

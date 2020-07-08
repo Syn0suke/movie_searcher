@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -17,14 +18,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.example.stefandy_2201789536.DeleteDetail;
+import com.example.stefandy_2201789536.MainActivity;
 import com.example.stefandy_2201789536.R;
 
+import java.io.File;
 import java.util.List;
 
+import helper.DatabaseHelper;
 import model.Film;
 
 public class SavedViewAdapter extends RecyclerView.Adapter<SavedViewAdapter.SavedViewHolder> implements PopupMenu.OnMenuItemClickListener {
 
+    private String judul,link;
+    DatabaseHelper db;
     private Context mContext;
     private List<Film> mData;
     RequestOptions option;
@@ -40,6 +46,7 @@ public class SavedViewAdapter extends RecyclerView.Adapter<SavedViewAdapter.Save
     public SavedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         LayoutInflater inflater = LayoutInflater.from(mContext);
+        db = new DatabaseHelper(mContext);
         view = inflater.inflate(R.layout.item_layout, parent, false);
         return new SavedViewHolder(view);
     }
@@ -63,6 +70,9 @@ public class SavedViewAdapter extends RecyclerView.Adapter<SavedViewAdapter.Save
         holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                Film pos = mData.get(position);
+                judul = pos.getTitle();
+                link = pos.getImage_url();
                 showPopup(v);
                 return true;
             }
@@ -78,7 +88,7 @@ public class SavedViewAdapter extends RecyclerView.Adapter<SavedViewAdapter.Save
 
         private TextView tv_title;
         private ImageView iv_thumbnail;
-        CardView cardView;
+        private CardView cardView;
 
         public SavedViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -99,8 +109,13 @@ public class SavedViewAdapter extends RecyclerView.Adapter<SavedViewAdapter.Save
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_add:
-
+            case R.id.menu_delete:
+                db.Delete(judul);
+                File file = new File(link);
+                file.delete();
+                Toast.makeText(mContext,"Delete Successful",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, MainActivity.class);
+                mContext.startActivity(intent);
                 return true;
             default:
                 return false;

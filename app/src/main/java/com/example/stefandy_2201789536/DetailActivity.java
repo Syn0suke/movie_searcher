@@ -33,7 +33,7 @@ public class DetailActivity extends AppCompatActivity {
     DatabaseHelper db;
     private Context mContext;
     private String savedImagePath = null;
-    private String title,year,id,url;
+    private String alt_title,title,year,id,url;
     private TextView detail_title,detail_year,detail_id;
     private Button btn;
     private ImageView detail_thumbnail;
@@ -60,14 +60,15 @@ public class DetailActivity extends AppCompatActivity {
         detail_thumbnail = findViewById(R.id.iv_detail);
 
         Intent intent = getIntent();
-        title = intent.getStringExtra("Title");
+        alt_title = intent.getStringExtra("Title");
+        title = alt_title.replaceFirst(":","");
         year = intent.getStringExtra("Year");
         id = intent.getStringExtra("Id");
         url = intent.getStringExtra("Image");
 
-        detail_title.setText(title);
-        detail_year.setText(year);
-        detail_id.setText(id);
+        detail_title.setText("Title  : " + title);
+        detail_year.setText("Year   : " + year);
+        detail_id.setText("IMDB ID : " + id);
         Glide.with(this).load(url).apply(option).into(detail_thumbnail);
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +96,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private String saveImage(Bitmap image) {
 
-        String imageFileName = "JPEG_" + title + ".jpeg";
+        String imageFileName = title + ".jpeg";
         File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
                 + "/MOVIE");
         boolean success = true;
@@ -124,5 +125,10 @@ public class DetailActivity extends AppCompatActivity {
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         sendBroadcast(mediaScanIntent);
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 }

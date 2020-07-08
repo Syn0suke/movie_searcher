@@ -37,7 +37,7 @@ import model.Film;
 public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.MovieViewHolder> implements PopupMenu.OnMenuItemClickListener {
 
     private String savedImagePath = null;
-    private String title,year,id;
+    private String alt_title,title,year,id;
     DatabaseHelper db;
     private Context mContext;
     private List<Film> mData;
@@ -80,7 +80,8 @@ public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.Mo
         holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                title = mData.get(position).getTitle();
+                alt_title = mData.get(position).getTitle();
+                title = alt_title.replaceFirst(":","");
                 year = mData.get(position).getYear();
                 id = mData.get(position).getId();
                 url = mData.get(position).getImage_url();
@@ -147,7 +148,7 @@ public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.Mo
 
     private String saveImage(Bitmap image) {
 
-        String imageFileName = "JPEG_" + title + ".jpeg";
+        String imageFileName = title + ".jpeg";
         File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
                 + "/MOVIE");
         boolean success = true;

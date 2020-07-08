@@ -1,6 +1,8 @@
 package com.example.stefandy_2201789536;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -56,8 +58,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_search, container, false);
-
-        recyclerView = (RecyclerView)v.findViewById(R.id.rv_search);
+        recyclerView = v.findViewById(R.id.rv_search);
         search = v.findViewById(R.id.search_movie);
         btnSearch = v.findViewById(R.id.btn_search);
 
@@ -67,6 +68,11 @@ public class SearchFragment extends Fragment {
                 jsonRequest();
             }
         });
+        if (checkConnection() == false)
+        {
+            Toast.makeText(getContext(),"Internet not Available",Toast.LENGTH_SHORT).show();
+            btnSearch.setEnabled(false);
+        }
         return v;
     }
 
@@ -74,8 +80,8 @@ public class SearchFragment extends Fragment {
         requestQueue = Volley.newRequestQueue(getContext());
 
         search_result = search.getText().toString();
-        String final_search = search_result.replaceFirst("\\s","+");
-        String url = "http://www.omdbapi.com/?s="+final_search+"&apikey=b7fe18b4";
+        String final_search = search_result.replaceFirst("\\s", "+");
+        String url = "http://www.omdbapi.com/?s=" + final_search + "&apikey=b7fe18b4";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -109,9 +115,23 @@ public class SearchFragment extends Fragment {
 
     private void setupRecyclerView(List<Film> lstFilm) {
 
-        SearchViewAdapter svAdapter = new SearchViewAdapter(getContext(),lstFilm);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+        SearchViewAdapter svAdapter = new SearchViewAdapter(getContext(), lstFilm);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         recyclerView.setAdapter(svAdapter);
+    }
+
+    public boolean checkConnection() {
+        ConnectivityManager manager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+
+        if (networkInfo != null) {
+            if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI || networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
 }

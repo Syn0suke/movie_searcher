@@ -24,7 +24,6 @@ public class SavedFragment extends Fragment {
     DatabaseHelper db;
     private List<Film> lstFilm = new ArrayList<Film>();
     private RecyclerView recyclerView;
-    private Button btnDelete;
 
     public SavedFragment() {
 
@@ -42,7 +41,6 @@ public class SavedFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_saved, container, false);
 
         recyclerView = (RecyclerView)v.findViewById(R.id.rv_saved);
-        btnDelete = v.findViewById(R.id.delete_button);
         db = new DatabaseHelper(getContext());
 
         lstFilm =db.ViewData();
